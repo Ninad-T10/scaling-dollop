@@ -1,0 +1,103 @@
+<div style="display: flex; height: 100vh;">
+  <div style="width: 50%;">
+    <form (ngSubmit)="onFormSubmit()" [formGroup]="contactsForm">
+      <h1 style="padding-top: 10px; padding-bottom: 10px; font-weight: 800; font-size: 2.5rem;">
+        Contactly
+      </h1>
+      <div style="margin-top: 8px;">
+        <label for="name" style="font-weight: 700;">Name</label>
+        <input type="text" style="width: 100%; padding: 8px; border: 2px solid; border-radius: 4px; margin-top: 8px;" formControlName="name">
+      </div>
+  
+      <div style="margin-top: 8px;">
+        <label for="email" style="font-weight: 700;">Email</label>
+        <input type="email" style="width: 100%; padding: 8px; border: 2px solid; border-radius: 4px; margin-top: 8px;" formControlName="email">
+      </div>
+  
+      <div style="margin-top: 8px;">
+        <label for="phone" style="font-weight: 700;">Phone</label>
+        <input type="text" style="width: 100%; padding: 8px; border: 2px solid; border-radius: 4px; margin-top: 8px;" formControlName="phone">
+      </div>
+  
+      <div style="margin-top: 8px;">
+        <label for="favorite" style="display: flex; align-items: center; font-weight: 700;">
+          <input type="checkbox" formControlName="favorite" style="height: 16px; width: 16px; margin-right: 8px;">
+          <span>Favorite</span>
+        </label>
+      </div>
+  
+      <div style="margin-top: 8px;">
+        <button type="submit" style="background-color: #47af53; color: white; padding: 8px 16px; border-radius: 4px; width: 100%;">Submit</button>
+      </div>
+    </form>
+  </div>
+  
+  <div class="overflow-auto" style="width: 50%;">
+    <table *ngIf="contacts$ | async as contacts" style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr>
+          <th style="padding: 10px; background-color: #27aba4; border-bottom: 2px solid #d7dde2;">Name</th>
+          <th style="padding: 10px; background-color: #27aba4; border-bottom: 2px solid #d7dde2;">Email</th>
+          <th style="padding: 10px; background-color: #27aba4; border-bottom: 2px solid #d7dde2;">Phone</th>
+          <th style="padding: 10px; background-color: #27aba4; border-bottom: 2px solid #d7dde2;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+         <tr *ngFor="let contact of contacts" (click)="selectRow(contact)" 
+        [ngClass]="{'bg-yellow-200': isSelected(contact), 'selected-row': isSelected(contact)}"
+            style="cursor: pointer; background-color: #ebecdf;">
+          <td style="padding: 10px; border-bottom: 2px solid #27aba4;">
+            <span style="font-weight: 300; font-size: 24px;">{{ contact.name }}</span>
+          </td>
+          <td style="padding: 10px; border-bottom: 2px solid #27aba4;">
+            <span>{{ contact.email }}</span>
+          </td>
+          <td style="padding: 10px; border-bottom: 2px solid #27aba4;">
+            <span>{{ contact.phone }}</span>
+          </td>
+          <td style="padding: 10px; border-bottom: 2px solid #27aba4;">
+            <button style="background-color: #f91c23; color: #111111; padding: 10px 20px; border-radius: 4px;" type="button" (click)="onDelete(contact.id.toString())">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="!(contacts$ | async)?.length">No contacts found.</p>
+  </div>
+</div>
+<div>
+  <input id="input" style="width: 10%; padding: 4px; border: 2px solid; border-radius: 4px; margin-top: 5px;">
+  <button style="background-color: #1cd0f9; color: #111111; padding: 5px 5px; border-radius: 2px;" type="button"  (click)="speak() ">
+   Speak
+  </button>
+</div>
+<div>
+  <app-detail [detail]="contacts$"></app-detail>
+</div>
+<div>
+  <div>
+    <label for="mainDropdown">Select an option:</label>
+    <select id="mainDropdown" (change)="onMainDropdownChange($event)">
+      <option value="show">Show Dropdowns</option>
+      <option value="hide">Hide Dropdowns</option>
+    </select>
+  </div>
+  
+  <div *ngIf="!hideDropdowns">
+    <label for="dropdown1">Dropdown 1:</label>
+    <select id="dropdown1">
+      <option value="option1">Option 1</option>
+      <option value="option2">Option 2</option>
+    </select>
+  </div>
+  
+  <div *ngIf="!hideDropdowns">
+    <label for="dropdown2">Dropdown 2:</label>
+    <select id="dropdown2">
+      <option value="option1">Option 1</option>
+      <option value="option2">Option 2</option>
+    </select>
+  </div>
+
+</div>
